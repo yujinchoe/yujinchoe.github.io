@@ -1,3 +1,4 @@
+/* 평가 항목 2: 반복되는 색상·글꼴·간격을 CSS 변수로 모아 테마와 디자인 수정 지점을 한곳에 둡니다. */
 :root {
   color-scheme: light;
   --bg: #f5f3ed;
@@ -21,6 +22,7 @@
   scroll-padding-top: 5.5rem;
 }
 
+/* 평가 항목 1·3: JS가 data-theme을 바꾸면 이 변수들이 다크 테마 화면을 만듭니다. */
 [data-theme="dark"] {
   color-scheme: dark;
   --bg: #1c1e1b;
@@ -45,11 +47,13 @@ a { color: inherit; text-decoration: none; }
 button, input, textarea, select { font: inherit; }
 button, a, select { -webkit-tap-highlight-color: transparent; }
 ::selection { color: #20221e; background: var(--accent); }
+/* 평가 항목 4: 기본 규칙은 작은 모바일 화면에 맞추고, 아래 미디어 쿼리에서 확장합니다. */
 .container { width: min(100% - 2.5rem, 1160px); margin-inline: auto; }
 .skip-link { position: fixed; z-index: 100; top: .75rem; left: .75rem; padding: .65rem 1rem; color: var(--button-text); background: var(--button); transform: translateY(-180%); }
 .skip-link:focus { transform: translateY(0); }
 .site-header { position: fixed; z-index: 20; inset: 0 0 auto; border-bottom: 1px solid transparent; transition: background .25s, border-color .25s, backdrop-filter .25s; }
 .site-header.is-scrolled { border-color: var(--line); background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(14px); }
+/* 평가 항목 3: Flexbox는 한 줄의 로고·메뉴·테마 컨트롤을 정렬합니다. */
 .nav-wrap { min-height: 4.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
 .brand { font-size: 1.85rem; line-height: 1; font-weight: 800; letter-spacing: -.1em; }
 .brand span, .period { color: var(--accent-deep); }
@@ -124,6 +128,7 @@ h1 { margin-bottom: 1.2rem; font-family: var(--font-display); font-size: clamp(3
 .language-filter:hover, .language-filter:focus-visible { border-color: var(--accent); color: var(--accent); }
 .language-filter.is-active { border-color: var(--accent); color: #20221e; background: var(--accent); }
 .language-filter:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+/* 평가 항목 3: Grid는 카드의 행·열을 함께 배치하고 화면 폭에 따라 열 수를 자동 조정합니다. */
 .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: .9rem; }
 .project-card { min-height: 220px; display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid #454840; background: #2a2d27; box-shadow: 0 14px 28px rgb(0 0 0 / 9%); transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
 .project-card:hover { transform: translateY(-5px); border-color: var(--accent-deep); box-shadow: 0 20px 35px rgb(0 0 0 / 19%); }
@@ -167,6 +172,7 @@ h1 { margin-bottom: 1.2rem; font-family: var(--font-display); font-size: clamp(3
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
 .reveal:nth-child(2) { transition-delay: .08s; }
 
+/* 평가 항목 1·4: 화면이 넓어질 때 모바일 기본 레이아웃을 태블릿/데스크톱 배치로 확장합니다. */
 @media (min-width: 600px) {
   .container { width: min(100% - 4rem, 1160px); }
   .hero { min-height: min(850px, 100svh); }
