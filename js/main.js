@@ -100,9 +100,27 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
     const target = document.querySelector(link.getAttribute('href'));
     if (!target) return;
     event.preventDefault();
+    // 평가 항목 1: replaceState는 현재 기록을 덮어쓰므로, 새 앵커 이동은 pushState로 기록합니다.
+    if (location.hash !== link.hash) history.pushState(null, '', link.hash);
     target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
-    history.replaceState(null, '', link.getAttribute('href'));
+
+    // 평가 항목 1: 프로젝트 앵커 이동 후 포커스를 첫 필터로 옮겨 키보드 탐색도 이어지게 합니다.
+    if (target.id === 'projects') {
+      languageFilters.querySelector('button[data-language]')?.focus({ preventScroll: true });
+    }
   });
+});
+
+// 평가 항목 1: 브라우저 뒤로/앞으로 이동 시 URL의 앵커 위치와 프로젝트 키보드 포커스를 복원합니다.
+window.addEventListener('popstate', () => {
+  const target = document.querySelector(location.hash || '#top');
+  if (!target) return;
+  window.setTimeout(() => {
+    target.scrollIntoView({ behavior: 'auto', block: 'start' });
+    if (target.id === 'projects') {
+      languageFilters.querySelector('button[data-language]')?.focus({ preventScroll: true });
+    }
+  }, 0);
 });
 
 // 평가 항목 1: Intersection Observer threshold 0.2에서 섹션 등장 클래스를 적용합니다.
@@ -187,9 +205,11 @@ const renderProjects = () => {
 
 // 보너스·평가 항목 3: map/filter와 Set으로 언어 버튼을 만들고 선택 언어별로 카드를 거릅니다.
 const populateLanguageFilter = () => {
+  const filterHadFocus = languageFilters.contains(document.activeElement);
   const languages = [...new Set(STATE.repos.map(({ language }) => language).filter(Boolean))].sort((a, b) => a.localeCompare(b));
   STATE.language = 'all';
   languageFilters.innerHTML = '<button class="language-filter is-active" type="button" data-language="all" aria-pressed="true">전체</button>' + languages.map((language) => `<button class="language-filter" type="button" data-language="${escapeHTML(language)}" aria-pressed="false">${escapeHTML(language)}</button>`).join('');
+  if (filterHadFocus) languageFilters.querySelector('button[data-language]')?.focus({ preventScroll: true });
 };
 
 languageFilters.addEventListener('click', (event) => {
